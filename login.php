@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,12 @@
         body {
             background-color: #d3d3d3;
             height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
         .login-container {
             background: white;
             padding: 30px;
@@ -21,27 +24,33 @@
             text-align: center;
             width: 350px;
         }
+
         .login-container img {
             width: 80px;
             margin-bottom: 15px;
         }
+
         .btn-primary {
             background-color: #b73d3d;
             border: none;
         }
+
         .btn-primary:hover {
             background-color: #8c2f2f;
         }
+
         .register-link {
             margin-top: 10px;
             font-size: 14px;
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <h3>Login</h3>
-        <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+        <!-- Menampilkan pesan error jika ada -->
+        <!-- <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?> -->
         <form method="post">
             <div class="mb-3">
                 <input type="text" name="username" class="form-control" placeholder="Username" required>
@@ -53,12 +62,14 @@
                 <input type="checkbox" class="form-check-input" id="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Tambah Mahasiswa</button>
+            <button type="submit" class="btn btn-primary w-100"  onclick="window.location.href='mahasiswa.php'">Login</button>
         </form>
         <div class="register-link">
-            <p><a href="forgot_password.php">Forgot password?</a></p>
-            Not registered? <a href="register.php">Create an account!</a>
+            <p><a href="forgot.php">Forgot password?</a>
+            </p>
+            <!-- Not registered? <a href="register.php">Create an account!</a> -->
         </div>
     </div>
 </body>
+
 </html>
