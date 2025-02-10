@@ -55,7 +55,7 @@
         <form method="POST">
             <div class="mb-3">
                 <label class="form-label">NIM:</label>
-                <input type="text" name="nim" class="form-control" required>
+                <input type="number" name="nim" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Nama:</label>
@@ -67,11 +67,26 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Fakultas:</label>
-                <input type="text" name="fakultas" class="form-control" required>
+                <select name="fakultas" class="form-control" required>
+                    <option value="" disabled selected>Pilih Fakultas</option>
+                    <option value="Teknik">Teknik</option>
+                    <option value="Ekonomi">Ekonomi</option>
+                    <option value="Kedokteran">Kedokteran</option>
+                    <option value="Ilmu Komputer">Ilmu Komputer</option>
+                    <option value="Hukum">Hukum</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">Jurusan:</label>
-                <input type="text" name="jurusan" class="form-control" required>
+                <select name="jurusan" class="form-control" required>
+                    <option value="" disabled selected>Pilih Jurusan</option>
+                    <option value="Teknik Informatika">Teknik Informatika</option>
+                    <option value="Sistem Informasi">Sistem Informasi</option>
+                    <option value="Manajemen">Manajemen</option>
+                    <option value="Akuntansi">Akuntansi</option>
+                    <option value="Kedokteran Umum">Kedokteran Umum</option>
+                    <option value="Ilmu Hukum">Ilmu Hukum</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label">IPK:</label>
