@@ -41,7 +41,7 @@
         }
 
         .table-container {
-            width: 80%;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
