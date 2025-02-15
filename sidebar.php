@@ -43,7 +43,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <h3><i class="bi bi-mortarboard-fill"></i> Dashboard</h3>
+        <h3><i class="bi bi-mortarboard-fill"></i> KampusKu</h3>
         <a href="mahasiswa.php" class="<?= basename($_SERVER['PHP_SELF']) == 'mahasiswa.php' ? 'active' : '' ?>">
             <i class="bi bi-person-lines-fill"></i> Data Mahasiswa
         </a>

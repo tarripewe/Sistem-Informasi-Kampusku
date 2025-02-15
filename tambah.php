@@ -58,7 +58,11 @@
                 <input type="number" name="nim" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Nama:</label>
+                <label class="form-label">Nama Lengkap:</label>
+                <input type="text" name="nama" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tempat Lahir:</label>
                 <input type="text" name="nama" class="form-control" required>
             </div>
             <div class="mb-3">

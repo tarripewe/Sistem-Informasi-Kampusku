@@ -1,3 +1,16 @@
+<?php
+include("config.php");
+
+// Ambil data mahasiswa dari database
+$query = "SELECT * FROM mahasiswa";
+$result = mysqli_query($conn, $query);
+
+// Cek apakah query berhasil
+if (!$result) {
+    die("Query gagal: " . mysqli_error($conn));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -139,21 +152,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>22040175</td>
-                    <td>Tarri Peritha Westi</td>
-                    <td>Jakarta</td>
-                    <td>02-10-2002</td>
-                    <td>Teknik</td>
-                    <td>Informatika</td>
-                    <td>3.8</td>
-                    <td>
-                        <button class="edit-button" onclick="window.location.href='edit.php'">Edit</button>
-                        <button class="hapus-button" onclick="confirmDelete(1)">Hapus</button>
-                    </td>
-                </tr>
-                <!-- Tambahkan data lainnya di sini -->
+                <?php
+
+                if ($result->num_rows > 0) {
+                    $no = 1;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . $no++ . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+                        echo "<td>" . $row['nama_mahasiswa'] . "</td>";
+                        echo "<td>" . $row['tempat_lahir'] . "</td>";
+                        echo "<td>" . date("d-m-Y", strtotime($row['tanggal_lahir'])) . "</td>";
+                        echo "<td>" . $row['fakultas'] . "</td>";
+                        echo "<td>" . $row['jurusan'] . "</td>";
+                        echo "<td>" . $row['ipk'] . "</td>";
+                        echo "<td>
+                                <button class='edit-button' onclick=\"window.location.href='edit.php?id=" . $row['id'] . "'\">Edit</button>
+                                <button class='hapus-button' onclick=\"confirmDelete(" . $row['id'] . ")\">Hapus</button>
+                              </td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='9'>Tidak ada data</td></tr>";
+                }
+                // Menutup koneksi
+                $conn->close();
+                ?>
             </tbody>
         </table>
     </div>
