@@ -56,7 +56,8 @@
             text-align: center;
         }
 
-        th, td {
+        th,
+        td {
             border: 2px solid maroon;
             padding: 8px;
             text-align: center;
@@ -67,7 +68,8 @@
             color: white;
         }
 
-        .edit-button, .hapus-button {
+        .edit-button,
+        .hapus-button {
             padding: 8px 15px;
             font-size: 14px;
             border: none;
@@ -176,4 +178,5 @@
     </div>
 
 </body>
+
 </html>
