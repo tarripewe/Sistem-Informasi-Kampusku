@@ -1,8 +1,23 @@
 <?php
 include("config.php");
 
-// Ambil data mahasiswa dari database
-$query = "SELECT * FROM mahasiswa";
+// Konfigurasi pagination
+$limit = 10; // Jumlah data per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) {
+    $page = 1;
+}
+$offset = ($page - 1) * $limit;
+
+// Hitung total data mahasiswa
+$countQuery = "SELECT COUNT(*) as total FROM mahasiswa";
+$countResult = mysqli_query($conn, $countQuery);
+$countData = mysqli_fetch_assoc($countResult);
+$totalRecords = $countData['total'];
+$totalPages = ceil($totalRecords / $limit);
+
+// Ambil data mahasiswa dengan limit dan offset, urutkan secara DESC
+$query = "SELECT * FROM mahasiswa ORDER BY id_mahasiswa DESC LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $query);
 
 // Cek apakah query berhasil
@@ -13,7 +28,6 @@ if (!$result) {
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +43,6 @@ if (!$result) {
             display: flex;
             height: 100vh;
         }
-
         .main-content {
             margin-left: 270px;
             padding: 40px;
@@ -38,7 +51,6 @@ if (!$result) {
             align-items: center;
             flex-direction: column;
         }
-
         .tambah-button {
             padding: 12px 24px;
             background-color: maroon;
@@ -48,11 +60,9 @@ if (!$result) {
             border-radius: 5px;
             font-size: 16px;
         }
-
         .tambah-button:hover {
             background-color: #600000;
         }
-
         .table-container {
             width: 100%;
             display: flex;
@@ -60,7 +70,6 @@ if (!$result) {
             align-items: center;
             margin-bottom: 20px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -68,21 +77,16 @@ if (!$result) {
             border: 2px solid maroon;
             text-align: center;
         }
-
-        th,
-        td {
+        th, td {
             border: 2px solid maroon;
             padding: 8px;
             text-align: center;
         }
-
         th {
             background-color: maroon;
             color: white;
         }
-
-        .edit-button,
-        .hapus-button {
+        .edit-button, .hapus-button {
             padding: 8px 15px;
             font-size: 14px;
             border: none;
@@ -90,24 +94,33 @@ if (!$result) {
             border-radius: 5px;
             width: 80px;
         }
-
         .edit-button {
             background-color: #6E8E59;
             color: white;
             margin-right: 5px;
         }
-
         .hapus-button {
             background-color: #B82132;
             color: white;
         }
-
         .edit-button:hover {
             background-color: #5a7d4e;
         }
-
         .hapus-button:hover {
             background-color: #a71d2a;
+        }
+        /* Styling pagination agar serasi dengan tema maroon */
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination .page-link {
+            color: maroon;
+            border: 1px solid maroon;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: maroon;
+            border-color: maroon;
+            color: #fff;
         }
     </style>
     <script>
@@ -118,7 +131,6 @@ if (!$result) {
             var myModal = new bootstrap.Modal(document.getElementById("deleteModal"));
             myModal.show();
         }
-
         function deleteData() {
             var id = document.getElementById("confirmDeleteBtn").getAttribute("data-id");
             alert("Data dengan ID " + id + " telah dihapus!");
@@ -126,17 +138,13 @@ if (!$result) {
         }
     </script>
 </head>
-
 <body>
-
     <?php include("sidebar.php"); ?>
-
     <div class="main-content">
         <div class="table-container">
             <h2>Data Mahasiswa</h2>
             <button class="tambah-button" onclick="window.location.href='tambah.php'">Tambah Mahasiswa</button>
         </div>
-
         <table>
             <thead>
                 <tr>
@@ -153,9 +161,8 @@ if (!$result) {
             </thead>
             <tbody>
                 <?php
-
-                if ($result->num_rows > 0) {
-                    $no = 1;
+                if (mysqli_num_rows($result) > 0) {
+                    $no = $offset + 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         echo "<td>" . $no++ . "</td>";
@@ -175,11 +182,32 @@ if (!$result) {
                 } else {
                     echo "<tr><td colspan='9'>Tidak ada data</td></tr>";
                 }
-                // Menutup koneksi
-                $conn->close();
                 ?>
             </tbody>
         </table>
+
+        <!-- Pagination diletakkan di sudut kanan bawah tabel -->
+        <nav aria-label="Page navigation" class="d-flex justify-content-end">
+            <ul class="pagination">
+                <?php if ($page > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo ($page - 1); ?>">Previous</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($page < $totalPages): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo ($page + 1); ?>">Next</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
     </div>
 
     <!-- Modal Konfirmasi Hapus -->
@@ -200,7 +228,5 @@ if (!$result) {
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
