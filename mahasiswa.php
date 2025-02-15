@@ -174,8 +174,8 @@ if (!$result) {
                         echo "<td>" . $row['jurusan'] . "</td>";
                         echo "<td>" . $row['ipk'] . "</td>";
                         echo "<td>
-                                <button class='edit-button' onclick=\"window.location.href='edit.php?id=" . $row['id'] . "'\">Edit</button>
-                                <button class='hapus-button' onclick=\"confirmDelete(" . $row['id'] . ")\">Hapus</button>
+                                <button class='edit-button' onclick=\"window.location.href='edit.php?id_mahasiswa=" . $row['id_mahasiswa'] . "'\">Edit</button>
+                                <button class='hapus-button' onclick=\"confirmDelete(" . $row['id_mahasiswa'] . ")\">Hapus</button>
                               </td>";
                         echo "</tr>";
                     }
