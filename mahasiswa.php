@@ -76,8 +76,12 @@ $countData = mysqli_fetch_assoc($countResult);
 $totalRecords = $countData['total'];
 $totalPages = ceil($totalRecords / $limit);
 
-// Ambil data mahasiswa dengan limit dan offset, urutkan secara DESC
-$query = "SELECT * FROM mahasiswa ORDER BY id_mahasiswa DESC LIMIT $limit OFFSET $offset";
+// Ambil data mahasiswa dengan JOIN agar menampilkan nama fakultas dan jurusan, urutkan secara DESC
+$query = "SELECT m.*, f.nama_fakultas, j.nama_jurusan 
+          FROM mahasiswa m
+          JOIN fakultas f ON m.fakultas = f.id_fakultas
+          JOIN jurusan j ON m.jurusan = j.id_jurusan
+          ORDER BY m.id_mahasiswa DESC LIMIT $limit OFFSET $offset";
 $result = mysqli_query($conn, $query);
 
 // Cek apakah query berhasil
@@ -231,8 +235,8 @@ if (!$result) {
             echo "<td>" . $row['nama_mahasiswa'] . "</td>";
             echo "<td>" . $row['tempat_lahir'] . "</td>";
             echo "<td>" . date("d-m-Y", strtotime($row['tanggal_lahir'])) . "</td>";
-            echo "<td>" . $row['fakultas'] . "</td>";
-            echo "<td>" . $row['jurusan'] . "</td>";
+            echo "<td>" . $row['nama_fakultas'] . "</td>";
+            echo "<td>" . $row['nama_jurusan'] . "</td>";
             echo "<td>" . $row['ipk'] . "</td>";
             echo "<td>
                     <button class='edit-button' onclick=\"window.location.href='edit.php?id_mahasiswa=" . $row['id_mahasiswa'] . "'\">Edit</button>
