@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="container">
         <a href="mahasiswa.php" class="close-btn"><i class="bi bi-x-circle"></i></a>
-        <h2>Data Mahasiswa</h2>
+        <h2>Detail Mahasiswa</h2>
         <form id="editForm" method="POST">
             <div class="mb-3">
                 <label class="form-label">NIM:</label>
