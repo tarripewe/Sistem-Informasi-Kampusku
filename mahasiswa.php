@@ -357,7 +357,7 @@ function getSortIcon($col)
                     if (mysqli_num_rows($result) > 0) {
                         $no = $offset + 1;
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>";
+                            echo "<tr onclick=\"window.location.href='detail_mahasiswa.php?id_mahasiswa=" . $row['id_mahasiswa'] . "'\" style='cursor: pointer;'>";
                             echo "<td>" . $no++ . "</td>";
                             echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
                             echo "<td>" . $row['nama_mahasiswa'] . "</td>";
@@ -367,9 +367,9 @@ function getSortIcon($col)
                             echo "<td>" . $row['nama_jurusan'] . "</td>";
                             echo "<td>" . $row['ipk'] . "</td>";
                             echo "<td>
-                          <button class='edit-button' onclick=\"window.location.href='edit.php?id_mahasiswa=" . $row['id_mahasiswa'] . "'\">Edit</button>
-                          <button class='hapus-button' onclick=\"confirmDelete(" . $row['id_mahasiswa'] . ")\">Hapus</button>
-                        </td>";
+                <button class='edit-button' onclick=\"event.stopPropagation(); window.location.href='edit.php?id_mahasiswa=" . $row['id_mahasiswa'] . "'\">Edit</button>
+                <button class='hapus-button' onclick=\"event.stopPropagation(); confirmDelete(" . $row['id_mahasiswa'] . ")\">Hapus</button>
+            </td>";
                             echo "</tr>";
                         }
                     } else {
@@ -377,6 +377,7 @@ function getSortIcon($col)
                     }
                     ?>
                 </tbody>
+
             </table>
         </div>
         <!-- Pagination -->

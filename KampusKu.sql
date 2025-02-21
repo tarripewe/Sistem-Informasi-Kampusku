@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2025 at 08:18 AM
+-- Generation Time: Feb 21, 2025 at 02:17 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -92,6 +92,17 @@ CREATE TABLE `mahasiswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`id_mahasiswa`, `nim`, `nama_mahasiswa`, `tempat_lahir`, `tanggal_lahir`, `fakultas`, `jurusan`, `ipk`) VALUES
+(5, 22040177, 'Angeline Wongsonegoro', 'Jakarta', '2009-06-10', '2', '4', 3.9),
+(6, 22087926, 'Andriana Susanto', 'Malang', '2012-06-06', '4', '16', 3.12),
+(8, 22040145, 'Kholifah Fitria Ningrum', 'Suligi', '2001-06-06', '1', '3', 3.8),
+(9, 22040147, 'Zahra Putri', 'Surabaya', '2001-06-24', '4', '15', 3.52),
+(10, 22040149, 'Tuti Utari', 'Medan', '2000-02-25', '2', '10', 2.77);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -134,7 +145,7 @@ ALTER TABLE `jurusan`
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id_mahasiswa` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_mahasiswa` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

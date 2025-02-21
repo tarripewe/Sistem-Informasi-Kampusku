@@ -55,9 +55,9 @@
         <a href="pengaturan.php" class="<?= basename($_SERVER['PHP_SELF']) == 'pengaturan.php' ? 'active' : '' ?>">
             <i class="bi bi-gear-fill"></i> Pengaturan
         </a>
-        <!-- <a href="logout.php">
+        <a href="logout.php">
             <i class="bi bi-box-arrow-right"></i> Logout
-        </a> -->
+        </a>
     </div>
 </body>
 
