@@ -1,11 +1,58 @@
+<?php
+session_start();
+include 'config.php'; // Pastikan koneksi database benar
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$error = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    if (empty($username) || empty($password)) {
+        $error = "⚠️ Username dan password wajib diisi!";
+    } else {
+        $query = "SELECT * FROM user WHERE username = ?";
+        $stmt = mysqli_prepare($conn, $query);
+
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "s", $username);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            if ($row = mysqli_fetch_assoc($result)) {
+                $hashed_password = sha1($password); // Hash dengan SHA1
+
+                if ($hashed_password === $row['password']) {
+                    $_SESSION['username'] = $username;
+                    echo "<script>window.location.href='mahasiswa.php';</script>";
+                    exit();
+                } else {
+                    $error = "⚠️ Password salah!";
+                }
+            } else {
+                $error = "⚠️ Username tidak ditemukan!";
+            }
+
+            mysqli_stmt_close($stmt);
+        } else {
+            die("Error dalam menyiapkan statement: " . mysqli_error($conn));
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             background-color: #d3d3d3;
@@ -25,11 +72,6 @@
             width: 350px;
         }
 
-        .login-container img {
-            width: 80px;
-            margin-bottom: 15px;
-        }
-
         .btn-primary {
             background-color: #b73d3d;
             border: none;
@@ -39,9 +81,16 @@
             background-color: #8c2f2f;
         }
 
-        .register-link {
-            margin-top: 10px;
-            font-size: 14px;
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -49,27 +98,64 @@
 <body>
     <div class="login-container">
         <h3>Login</h3>
-        <!-- Menampilkan pesan error jika ada -->
-        <!-- <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?> -->
         <form method="post">
             <div class="mb-3">
                 <input type="text" name="username" class="form-control" placeholder="Username" required>
             </div>
-            <div class="mb-3">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
+            <div class="mb-3 password-container">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
             </div>
-            <div class="mb-3 form-check text-start">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Remember me</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100"  onclick="window.location.href='mahasiswa.php'">Login</button>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
-        <div class="register-link">
-            <p><a href="forgot.php">Forgot password?</a>
-            </p>
-            <!-- Not registered? <a href="register.php">Create an account!</a> -->
+    </div>
+
+    <!-- Modal Error -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-danger">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Login Gagal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-danger text-center">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 2rem;"></i>
+                    <p class="mt-2"><?php echo $error; ?></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Coba Lagi</button>
+                </div>
+            </div>
         </div>
     </div>
-</body>
 
+    <!-- Tampilkan Modal Jika Error -->
+    <?php if (isset($error) && !empty($error)): ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            });
+        </script>
+    <?php endif; ?>
+
+    <!-- Toggle Password Visibility -->
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            var passwordField = document.getElementById("password");
+            var icon = document.getElementById("togglePassword");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            }
+        });
+    </script>
+
+</body>
 </html>
